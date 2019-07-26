@@ -1,6 +1,9 @@
 #include "includes.hpp"
 #include "DBManager.hpp"
 
+extern char username[256];
+extern char password[256];
+
 int main(int argc, char *argv[])
 {
 	if(argc < 3)
