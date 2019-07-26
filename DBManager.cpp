@@ -1,4 +1,5 @@
 #include "includes.hpp"
+#include "DBManager.hpp"
 
 int initDB()
 {
