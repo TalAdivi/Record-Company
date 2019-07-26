@@ -3,6 +3,8 @@
 
 #include "includes.hpp"
 
+char username[256];
+char password[256];
 
 int initDB();
 int initData();
