@@ -1,0 +1,161 @@
+1)
+SELECT * 
+FROM Album 
+WHERE Date < ? AND Date > ? 
+
+2)
+select * from musicina where name = name;
+//chooses if there are duplicates which one.
+
+count(SELECT * 
+FROM tracks join ( select * from musician_track where musicianid= id)
+WHERE
+date < ? and date > ?
+)
+
+3)
+select * from musicina where name = name;
+//chooses if there are duplicates which one by id.
+
+select * from T_A semi join(select * from track where m_id = id)
+
+4)
+we bring all instrument 
+foreach instrument we bring the musicians
+	foreach musician we count how many tracks he performed
+		save in a local variables currmax currid;
+
+return select * instruments where instrument id = currid;
+
+
+5)
+select * from album where name = name;
+//chooses if there are duplicates which one by id.
+
+select i_id from Album_track join Musican_Tracks join musican_instrumant
+where a_id = id;
+
+	foreach i_id in result
+		select * from instrument where i_id = id;
+		print;
+		
+		
+6)
+select * from producers 
+	foreach prod in producers
+		x = count ( select * from Album join (select * from producers_album where pid = id) where date < ? and date > ?);
+			if  ( x < max ) 
+				max = x
+				id = pid;
+				
+select * from producers where pid = pid;
+print ;
+
+
+7)
+init two arrays to save the instrument manufacturer and amount relative position in the array.
+
+we bring all instrument 
+foreach instrument we bring the musicians
+	foreach musician we count how many tracks he performed
+		save in a local variables currmax currid;
+		if( !instrument manufacturer exists in array )
+			push(manufacturer);
+			count push (0);
+
+		i = getindex(manufacturerrs);
+		count[i] ++;		
+		
+find max of countl
+return manufacturerrs[index of max];
+
+
+8)
+count(select * from Musican semi join Musican_Tracks);
+
+
+9)
+init two arrays musicans and counts
+
+select * from tracks 
+	foreach track
+		x= count ( select * Musican_Tracks where track_id = id;
+			if ( x > 1)
+				if( !instrument manufacturer exists in array )
+					push(manufacturer);
+					count push (0);
+				i=getndex(musician);
+				count[i]+=x;
+				
+find max of count
+return musician[index of max];
+
+10)
+init two arrays genres and counts
+	select * from tracks 
+		foreach track
+			if( !genre exists in array )
+				push(ganre);
+				count push(0);
+			i = getindex(ganre)
+			count[i]++;
+find max count
+return genre[index of max];
+
+11)
+
+init two arrays tech and counts
+	select * from tracks where date < ? and date > ?;
+		foreach track
+			if( !genre exists in array )
+				push(tech);
+				count push(0);
+			i = getindex(tech)
+			count[i]++;
+find max count
+return tech[index of max];
+
+12)
+
+select min(date) from Album;
+
+13)
+
+Select * from tracks;
+	foreach track in tracks
+		if (cout (select * from Album_track where track_id = id) > 1)
+		print ;
+
+14)
+
+select * from tracks ;
+create array of tech names;
+
+
+select * from Albums 
+	foreach Album in albums
+		print ( in album Album : )
+		x = album length;
+		for each tech in technames
+			y = cout ( select * from tracks join (select * from Album_track where albumid = id) where techname = tech ) ;
+			if ( y == x )
+				print tech;
+
+				
+15)
+
+init array of musicians
+int count array;
+array genre;
+int max;
+
+foreach musician;
+	select * from tracks join (select * from musican_tracks where musician id = id);
+	foreach track
+		if !exist track genre in genre
+			push(track genre)
+	if max < genre.length
+		max = genre.length
+		id = musicianid;
+		
+return select * musician where id = id;
