@@ -10,3 +10,8 @@ Developed with [Tal Adivi](https://github.com/TalAdivi)
 - [ ] build a parsing functions to recieve all the functionality queries data
 - [ ] build said functions to execute the requested functionality
 - [ ] build a interface for the user to use said functions
+
+
+#### Compilation 
+
+- this project uses the clang compiler and gcc make, you must have it installed.
