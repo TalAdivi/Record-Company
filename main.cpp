@@ -35,11 +35,12 @@ void printRes(mysqlx_result_t* res)
 	mysqlx_result_free(res);
 }
 
-void initDB(){
+void initDB(char* username, char* password)
+{
 	mysqlx_error_t *err;
 	mysqlx_stmt_t* query;
 	mysqlx_result_t* result;
-	mysqlx_session_t* session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, "root", "59897", "", &err);
+	mysqlx_session_t* session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, username, password, "", &err);
 
 	if (NULL == session) 
 	{
@@ -76,7 +77,7 @@ void initDB(){
 
 	mysqlx_session_close(session);
 
-	session =  mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, "root", "59897", "RecordCompany", &err);
+	session =  mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, username, password, "RecordCompany", &err);
 	
 	if (NULL == session) 
 	{
@@ -271,7 +272,12 @@ void initDB(){
 
 int main(int argc, char *argv[])
 {
-	initDB();
+	if(argc < 3)
+	{
+		std::cout << "Please insert connection details" << std::endl;
+		exit(-1);
+	}
+	initDB(argv[1],argv[2]);
 	std::cout << "DB initlized fully" << std::endl;
 	getchar();
 	return 0;
