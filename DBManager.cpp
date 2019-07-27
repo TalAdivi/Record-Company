@@ -28,7 +28,6 @@ int initDB()
 
 	query = mysqlx_sql_new(session, "create database `RecordCompany`", MYSQLX_NULL_TERMINATED);
 
-
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
@@ -87,7 +86,7 @@ int initDB()
   `S_Date` VARCHAR(256) NOT NULL,\
   `E_Date` VARCHAR(256) NOT NULL,\
   `Tracks_Number` INT NOT NULL,\
-  PRIMARY KEY (`A_id`, `Tracks_Number`));", MYSQLX_NULL_TERMINATED);
+  PRIMARY KEY (`A_id`));", MYSQLX_NULL_TERMINATED);
 
 
 	if( (result = mysqlx_execute(query)) == NULL)
@@ -198,9 +197,6 @@ int initData()
 	 	std::cout << mysqlx_error_message(err) << "\t" << session << std::endl;
 		return -1;
 	}
-	
-	std::cout << "0" << std::endl;
-	getchar();
 
 	query = mysqlx_sql_new(session, "INSERT INTO `musican` (`id_Musican`, `Name`, `Address`, `Phone`, `Skill`) VALUES\
  (1, 'Beethover', 'Austria', '098-909985', 'Player') ,\
@@ -218,9 +214,6 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	std::cout << "1" << std::endl;
-	getchar();
-
 	query = mysqlx_sql_new(session, "INSERT INTO `track` (`T_id`, `Name`, `Music_Compuser`, `Length`, `Lyrics_Composer`, `Date`, `Genre`, `Technician`) VALUES\
  (1, 'Ode to Joy', 'Beethoven', 220, 'NULL', '1824-01-01', 'Classical', 'Beethoven'),\
  (2, 'We Will Rock You','Queen',250,'Freddy Mercury','1977-10-07','Rock','Bill McGree'),\
@@ -235,9 +228,6 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	std::cout << "2" << std::endl;
-	getchar();
 
 	query = mysqlx_sql_new(session, "INSERT INTO `album` (`A_id`, `Name`, `S_Date`, `E_Date`, `Tracks_Number`) VALUES\
  (1, 'Ode to Joy RErelease', '2015-04-15', '2015-04-29', 1),\
@@ -253,9 +243,6 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	std::cout << "3" << std::endl;
-	getchar();
 
 	query = mysqlx_sql_new(session, "INSERT INTO `recordcompany`.`instrumant` (`I_id`, `Brand`, `Type`) VALUES\
  (1, 'Yamhaa', 'Piano'),\
@@ -271,9 +258,6 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	std::cout << "4" << std::endl;
-	getchar();
 
 	query = mysqlx_sql_new(session, "INSERT INTO `recordcompany`.`producer` (`p_ID`, `Name`) VALUES\
  (1, 'Bill McGree'),\
@@ -289,9 +273,6 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	std::cout << "5" << std::endl;
-	getchar();
 
 	query = mysqlx_sql_new(session, "INSERT INTO `musican_instrument` (`m_ID`, `i_ID`) VALUES\
  (1,1),\
@@ -311,9 +292,6 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 	
-	std::cout << "6" << std::endl;
-	getchar();
-
 	query = mysqlx_sql_new(session, "INSERT INTO `musican_tracks` (`m_ID`, `t_ID`) VALUES\
  (1,1),\
  (2,10),\
@@ -332,9 +310,6 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	std::cout << "7" << std::endl;
-	getchar();
 	
 	query = mysqlx_sql_new(session, "INSERT INTO `album_track`(`t_ID`, `a_ID`) VALUES\
  (1,1),\
@@ -364,10 +339,7 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	std::cout << "8" << std::endl;
-	getchar();
-		
+
 	query = mysqlx_sql_new(session, "INSERT INTO `album_producer` (`a_ID`,`p_ID`) VALUES\
  (1,1),\
  (2,2),\
@@ -391,9 +363,6 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 	
-	std::cout << "9" << std::endl;
-	getchar();
-
 	mysqlx_session_close(session);
 
 	return 1;

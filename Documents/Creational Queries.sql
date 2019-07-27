@@ -37,7 +37,7 @@ CREATE TABLE `album` (
   `S_Date` VARCHAR(256) NOT NULL,
   `E_Date` VARCHAR(256) NOT NULL,
   `Tracks_Number` INT NOT NULL,
-  PRIMARY KEY (`A_id`, `Tracks_Number`));
+  PRIMARY KEY (`A_id`));
 
 /* Create producer table */
 
