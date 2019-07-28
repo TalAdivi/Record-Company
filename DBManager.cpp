@@ -371,6 +371,9 @@ int initData()
 int userInterface()
 {
 	bool flag = true;
+	std::string tmp1;
+	std::string tmp1;
+
 	std::cout << "Welcome to MusicCompany project" << std::endl << std::endl;
 
 		int choice = 0;
@@ -399,12 +402,17 @@ int userInterface()
 		switch (choice)
 		{
 		case 1:
-				char firstD[256];
-				char lastD[256];
-				std::cin >> firstD >> lastD; 	
+				std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl << std::endl;
+				std::cin >> tmp1 >> tmp2;
+				std::cout << std::endl;
+				if(albumsBetween(firstD,lastD) == -1)
+					std::cout << "Error occured while executing the sql query" << std::endl; 	
 			break;
 
 		case 2:
+				std::cout << "Plese input musician name" << std::endl;
+				std::cin >> tmp1 ;
+				musicianSongBetween(tmp1);
 			break;
 
 		case 3:
