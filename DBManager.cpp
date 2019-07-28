@@ -59,7 +59,7 @@ int initDB()
   `I_id` INT NOT NULL UNIQUE,\
   `Brand` VARCHAR(256) NOT NULL,\
   `Type` VARCHAR(256) NOT NULL,\
-  PRIMARY KEY (`Brand`, `Type`));", MYSQLX_NULL_TERMINATED);
+  PRIMARY KEY (`I_id`, `Brand`, `Type`));", MYSQLX_NULL_TERMINATED);
 
 
 	if( (result = mysqlx_execute(query)) == NULL)

@@ -14,7 +14,7 @@ CREATE TABLE `instrumant` (
   `I_id` INT NOT NULL UNIQUE,
   `Brand` VARCHAR(256) NOT NULL,
   `Type` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`Brand`, `Type`));
+  PRIMARY KEY (`I_id`, `Brand`, `Type`));
   
 /* Create track table */
 
