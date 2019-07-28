@@ -8,10 +8,11 @@ select count(*) from track as t join musician_tracks on musician_tracks.m_ID = (
 where t.Date < "2019-07-26" and t.Date > "1990-01-01";
 
 /*3*/
+ select musician.id_musician from musician where name = "TMG"
 
 select count(*) from (select a_ID from( (select * from album_track) as a INNER JOIN
-(select * from musician_tracks where musician_tracks.m_ID = (select musician.id_musician from musician where name = "TMG")) as b
-on a.t_ID = b.t_ID) group by a_ID ) as c;
+(select * from musician_tracks where musician_tracks.m_ID =) as b
+on a.t_ID = b.t_ID) group by a_ID ) as c; name
 
 /*4*/
 

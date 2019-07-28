@@ -368,34 +368,95 @@ int initData()
 	return 1;
 }
 
-void printRes(mysqlx_result_t* res)
+int userInterface()
 {
-	if (NULL != res)
-	{
-		int64_t x;
-		char buff[256];
-		size_t size = 0;
-		mysqlx_row_t* row;
-		do
-		{
-			//to read value from row where only has 1 col and its a text
-			while( (row = mysqlx_row_fetch_one(res))!=NULL)
-			{
-				size = sizeof(buff);
-				mysqlx_get_bytes(row, 0, 0, buff, &size);
-				std::cout << buff << std::endl;
-			}
+	bool flag = true;
+	std::cout << "Welcome to MusicCompany project" << std::endl << std::endl;
 
-			//to read value from row where has 2 colums first signed int and second is a text
-			// while( (row = mysqlx_row_fetch_one(res))!=NULL)
-			// {
-			// 	size = sizeof(buff);
-			// 	row =  mysqlx_row_fetch_one(res); 
-			// 	mysqlx_get_sint(row, 0, &x);
-			// 	mysqlx_get_bytes(row, 1, 0, buff, &size);
-			// 	std::cout << x << ", "<< buff << std::endl;
-			// }
-		} while (RESULT_OK == mysqlx_next_result(res));
-	}
-	mysqlx_result_free(res);
+		int choice = 0;
+	do
+	{	
+		std::cout << " 1.\tHow many albums were created between two given dates\n\
+ 2.\tHow many songs recored by a specific musician between two given dates\n\
+ 3.\tHow many diffrent albums recorded specific musician between two given dates\n\
+ 4.\tWhat is the most popular instrument\n\
+ 5.\tList of instruments used in a specific album\n\
+ 6.\tThe most popular album producer between two given dates\n\
+ 7.\tThe most puplat manufacturer of an instrument\n\
+ 8.\tHow many musicians recorded throughout the years\n\
+ 9.\tThe musician who collaborated the most\n\
+ 10.\tThe most popular music genre\n\
+ 11.\tThe technician who worked on the most number of tracks between two given dates\n\
+ 12.\tThe first album ever recorded\n\
+ 13.\tList of tracks that were in two or more albums\n\
+ 14.\tList of technicians that worked on complete albums\n\
+ 15.\tThe musician with the most diverse musical genres \n\
+ 16.\tExit Program.\n\n\
+		"<< std::endl;
+		std::cout << "Please choose function by number >\t";
+		std::cin >> choice;
+
+		switch (choice)
+		{
+		case 1:
+				char firstD[256];
+				char lastD[256];
+				std::cin >> firstD >> lastD; 	
+			break;
+
+		case 2:
+			break;
+
+		case 3:
+			break;
+
+		case 4:
+			break;
+
+		case 5:
+			break;
+
+		case 6:
+			break;
+
+		case 7:
+			break;
+
+		case 8:
+			break;
+
+		case 9:
+			break;
+
+		case 10:
+			break;
+
+		case 11:
+			break;
+
+		case 12:
+			break;
+
+		case 13:
+			break;
+
+		case 14:
+			break;
+
+		case 15:
+			break;
+
+		case 16: 
+				flag = false;
+				std::cout << std::endl << "Goodbye" << std::endl;
+			break;
+		
+		default:
+			std::cout << "Incorrect number ! this choice does not exist please re enter" << std::endl;
+			break;
+		}
+		std::cout << " ---------------------------------------------------------------------- " << std::endl << std::endl;
+	}while(flag);
+
+	return 1;
 }

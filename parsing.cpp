@@ -1,7 +1,7 @@
 #include "parsing.hpp"
 
 template<typename T>
-std::vector<T*> initArray(mysqlx_result_t*)
+std::vector<T*> initArray(mysqlx_result_t* res)
 {
     std::vector<T*> v;
 

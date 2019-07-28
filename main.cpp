@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 	}
 	
 	std::cout << "Data inserted successfully" << std::endl;
-	getchar();
+
+	userInterface();
 	return 0;
 }

@@ -21,7 +21,7 @@ select * from T_A semi join(select * from track where m_id = id)
 
 4)
 we bring all instrument 
-foreach instrument we bring the musicians
+foreach instrument we bring the musicians 
 	foreach musician we count how many tracks he performed
 		save in a local variables currmax currid;
 
