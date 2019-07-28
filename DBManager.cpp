@@ -43,19 +43,19 @@ int initDB()
 
 	//create the main tables 
 
-	query = mysqlx_sql_new(session, "CREATE TABLE `musican` (\
-  `id_Musican` INT NOT NULL,\
+	query = mysqlx_sql_new(session, "CREATE TABLE `musician` (\
+  `id_musician` INT NOT NULL,\
   `Name` VARCHAR(256) NOT NULL,\
   `Address` VARCHAR(256) NOT NULL,\
   `Phone` VARCHAR(256) NOT NULL,\
   `Skill` VARCHAR(256) NOT NULL,\
-  PRIMARY KEY (`id_Musican`));", MYSQLX_NULL_TERMINATED);
+  PRIMARY KEY (`id_musician`));", MYSQLX_NULL_TERMINATED);
 
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `instrumant` (\
+	query = mysqlx_sql_new(session,"CREATE TABLE `instrument` (\
   `I_id` INT NOT NULL UNIQUE,\
   `Brand` VARCHAR(256) NOT NULL,\
   `Type` VARCHAR(256) NOT NULL,\
@@ -104,33 +104,33 @@ int initDB()
 
 	//Relations tables
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `musican_instrument` (\
+	query = mysqlx_sql_new(session,"CREATE TABLE `musician_instrument` (\
   `m_ID` INT NOT NULL,\
   `i_ID` INT NOT NULL,\
   PRIMARY KEY (`i_ID`, `m_ID`),\
   INDEX `MI_mID_idx` (`m_ID` ASC) VISIBLE,\
   CONSTRAINT `MI_mID`\
     FOREIGN KEY (`m_ID`)\
-    REFERENCES `recordcompany`.`musican` (`id_Musican`)\
+    REFERENCES `recordcompany`.`musician` (`id_musician`)\
     ON DELETE NO ACTION\
     ON UPDATE NO ACTION,\
   CONSTRAINT `MI_iID`\
     FOREIGN KEY (`i_ID`)\
-    REFERENCES `recordcompany`.`instrumant` (`I_id`)\
+    REFERENCES `recordcompany`.`instrument` (`I_id`)\
     ON DELETE NO ACTION\
     ON UPDATE NO ACTION);", MYSQLX_NULL_TERMINATED);
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `musican_tracks` (\
+	query = mysqlx_sql_new(session,"CREATE TABLE `musician_tracks` (\
   `m_ID` INT NOT NULL,\
   `t_ID` INT NOT NULL,\
   PRIMARY KEY (`m_ID`, `t_ID`),\
   INDEX `MT_tID_idx` (`t_ID` ASC) VISIBLE,\
   CONSTRAINT `MT_mID`\
     FOREIGN KEY (`m_ID`)\
-    REFERENCES `recordcompany`.`musican` (`id_Musican`)\
+    REFERENCES `recordcompany`.`musician` (`id_musician`)\
     ON DELETE NO ACTION\
     ON UPDATE NO ACTION,\
   CONSTRAINT `MT_tID`\
@@ -198,7 +198,7 @@ int initData()
 		return -1;
 	}
 
-	query = mysqlx_sql_new(session, "INSERT INTO `musican` (`id_Musican`, `Name`, `Address`, `Phone`, `Skill`) VALUES\
+	query = mysqlx_sql_new(session, "INSERT INTO `musician` (`id_musician`, `Name`, `Address`, `Phone`, `Skill`) VALUES\
  (1, 'Beethover', 'Austria', '098-909985', 'Player') ,\
  (2, 'Michael Jackson' ,'Los Angeles', '098-373489', 'Singer & Player'),\
  (3, 'James Cameron' ,'Los Angeles', '067-758937', 'Player'),\
@@ -244,7 +244,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `recordcompany`.`instrumant` (`I_id`, `Brand`, `Type`) VALUES\
+	query = mysqlx_sql_new(session, "INSERT INTO `recordcompany`.`instrument` (`I_id`, `Brand`, `Type`) VALUES\
  (1, 'Yamhaa', 'Piano'),\
  (2, 'Yamhaa', 'Synth'),\
  (3, 'Gibson', 'Bass'),\
@@ -274,7 +274,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `musican_instrument` (`m_ID`, `i_ID`) VALUES\
+	query = mysqlx_sql_new(session, "INSERT INTO `musician_instrument` (`m_ID`, `i_ID`) VALUES\
  (1,1),\
  (2,2),\
  (2,5),\
@@ -292,7 +292,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 	
-	query = mysqlx_sql_new(session, "INSERT INTO `musican_tracks` (`m_ID`, `t_ID`) VALUES\
+	query = mysqlx_sql_new(session, "INSERT INTO `musician_tracks` (`m_ID`, `t_ID`) VALUES\
  (1,1),\
  (2,10),\
  (3,10),\

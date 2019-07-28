@@ -1,16 +1,16 @@
 /* Create musician table */
 
-CREATE TABLE `musican` (
-  `id_Musican` INT NOT NULL,
+CREATE TABLE `musician` (
+  `id_musician` INT NOT NULL,
   `Name` VARCHAR(256) NOT NULL,
   `Address` VARCHAR(256) NOT NULL,
   `Phone` VARCHAR(256) NOT NULL,
   `Skill` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id_Musican`));
+  PRIMARY KEY (`id_musician`));
 
 /* Create instrument table */
 
-CREATE TABLE `instrumant` (
+CREATE TABLE `instrument` (
   `I_id` INT NOT NULL UNIQUE,
   `Brand` VARCHAR(256) NOT NULL,
   `Type` VARCHAR(256) NOT NULL,
@@ -48,32 +48,32 @@ CREATE TABLE `producer` (
 
 /* Create musician x instrument relation table */
 
-CREATE TABLE `musican_instrument` (
+CREATE TABLE `musician_instrument` (
   `m_ID` INT NOT NULL,
   `i_ID` INT NOT NULL,
   PRIMARY KEY (`i_ID`, `m_ID`),
   INDEX `MI_mID_idx` (`m_ID` ASC) VISIBLE,
   CONSTRAINT `MI_mID`
     FOREIGN KEY (`m_ID`)
-    REFERENCES `recordcompany`.`musican` (`id_Musican`)
+    REFERENCES `recordcompany`.`musician` (`id_musician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `MI_iID`
     FOREIGN KEY (`i_ID`)
-    REFERENCES `recordcompany`.`instrumant` (`I_id`)
+    REFERENCES `recordcompany`.`instrument` (`I_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 /* Create musician x track relation table */
 
-CREATE TABLE `musican_tracks` (
+CREATE TABLE `musician_tracks` (
   `m_ID` INT NOT NULL,
   `t_ID` INT NOT NULL,
   PRIMARY KEY (`m_ID`, `t_ID`),
   INDEX `MT_tID_idx` (`t_ID` ASC) VISIBLE,
   CONSTRAINT `MT_mID`
     FOREIGN KEY (`m_ID`)
-    REFERENCES `recordcompany`.`musican` (`id_Musican`)
+    REFERENCES `recordcompany`.`musician` (`id_musician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `MT_tID`

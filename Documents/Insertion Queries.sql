@@ -1,6 +1,6 @@
 /* insert musucians data */
 
-INSERT INTO `musican` (`id_Musican`, `Name`, `Address`, `Phone`, `Skill`) VALUES 
+INSERT INTO `musician` (`id_musician`, `Name`, `Address`, `Phone`, `Skill`) VALUES 
  (1, 'Beethover', 'Austria', '098-909985', 'Player') ,
  (2, 'Michael Jackson' ,'Los Angeles', '098-373489', 'Singer & Player'),
  (3, 'James Cameron' ,'Los Angeles', '067-758937', 'Player'),
@@ -43,7 +43,7 @@ INSERT INTO `album` (`A_id`, `Name`, `S_Date`, `E_Date`, `Tracks_Number`) VALUES
 
 /* insert instruments data */
 
-INSERT INTO `instrumant` (`I_id`, `Brand`, `Type`) VALUES
+INSERT INTO `instrument` (`I_id`, `Brand`, `Type`) VALUES
  (1, 'Yamhaa', 'Piano'),
  (2, 'Yamhaa', 'Synth'),
  (3, 'Gibson', 'Bass'),
@@ -71,7 +71,7 @@ INSERT INTO `producer` (`p_ID`, `Name`) VALUES
 
 /* insert musician instruments relation data */
 
-INSERT INTO `musican_instrument` (`m_ID`, `i_ID`) VALUES
+INSERT INTO `musician_instrument` (`m_ID`, `i_ID`) VALUES
  (1,1),
  (2,2),
  (2,5),
@@ -88,7 +88,7 @@ INSERT INTO `musican_instrument` (`m_ID`, `i_ID`) VALUES
 
 /* insert musucians tracks relation data */
 
-INSERT INTO `musican_tracks` (`m_ID`, `t_ID`) VALUES
+INSERT INTO `musician_tracks` (`m_ID`, `t_ID`) VALUES
  (1,1),
  (2,10),
  (3,10),
