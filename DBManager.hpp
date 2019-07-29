@@ -1,6 +1,6 @@
 #pragma once
 
-#include "includes.hpp"
+#include "parsing.hpp"
 
 class DataBase
 {
@@ -8,7 +8,6 @@ public:
 
     DataBase(const char* username, const char* password)
     {
-        
         strncpy(this->username, username, strlen(username));
         strncpy(this->password, password, strlen(password));
     }

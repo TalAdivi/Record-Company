@@ -1,12 +1,11 @@
 /*1*/
 
-select count(*) from album where E_Date < "2017-01-01" AND E_Date > "2004-01-01";
-
+select count(*) from album where E_Date > "2014-01-01" AND E_Date < "2019-01-01";
 /*2*/
-select musician.id_musician from musician where name = "ABBA"
+select * from musician where Name Like '%" + name + "%';
 
-select count(*) from track as t join musician_tracks as m on m.t_ID = t.T_id where m_ID = 10  
-and t.Date < "2019-07-26" and t.Date > "1990-01-01";
+select count(*) from track as t join musician_tracks as m on \
+ m.t_ID = t.T_id where m_ID = "id " and t.Date > '" + start + "' and t.Date < '" + end + "';
 
 /*3*/
  select musician.id_musician from musician where name = "TMG"
