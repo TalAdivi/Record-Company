@@ -789,8 +789,11 @@ int DataBase::producerOfAlbumBetween(std::string start, std::string end)
   {
 
     qstr = "select count(*) from (\
-(SELECT * FROM album_producer where p_ID = "+std::to_string(v[i]->getID())+") as a join album as b on a.a_ID = b.A_id )\
-where E_Date  > '"+start+"' and E_Date < '"+end+"';";
+ (SELECT * FROM album_producer where p_ID = " +
+           std::to_string(v[i]->getID()) + ") as a join album as b on a.a_ID = b.A_id )\
+ where E_Date  > '" +
+           start + "' and E_Date < '" + end + "';";
+    query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
 
     int value = 0;
     if ((result = mysqlx_execute(query)) != NULL)
