@@ -1,4 +1,3 @@
-#include "includes.hpp"
 #include "DBManager.hpp"
 
 int DataBase::connect()
@@ -541,7 +540,7 @@ int DataBase::musicianAlbumBetween(std::string name)
         mysqlx_get_sint(row, 0, &x);
         std::cout << "The amount of Albums that " << v[choice-1]->getName() << " released between " << start << " and " << end << " are : " << x << std::endl << std::endl << std::endl;
     }  
-    
+
     mysqlx_free(query);
     mysqlx_result_free(result);
 
