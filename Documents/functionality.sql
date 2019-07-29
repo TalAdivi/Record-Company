@@ -3,9 +3,10 @@
 select count(*) from album where E_Date < "2017-01-01" AND E_Date > "2004-01-01";
 
 /*2*/
+select musician.id_musician from musician where name = "ABBA"
 
-select count(*) from track as t join musician_tracks on musician_tracks.m_ID = (select musician.id_musician from musician where name = "ABBA")
-where t.Date < "2019-07-26" and t.Date > "1990-01-01";
+select count(*) from track as t join musician_tracks as m on m.t_ID = t.T_id where m_ID = 10  
+and t.Date < "2019-07-26" and t.Date > "1990-01-01";
 
 /*3*/
  select musician.id_musician from musician where name = "TMG"

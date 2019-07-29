@@ -5,4 +5,4 @@
 
 int albumsBetween(std::string start, std::string end);
 int musicianSongBetween(std::string name);
-
+int musicianAlbumBetween(std::string name);

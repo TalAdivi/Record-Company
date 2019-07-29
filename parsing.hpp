@@ -2,20 +2,24 @@
 
 #include "includes.hpp"
 
-template <typename T>
-std::vector<T*> initArray(mysqlx_result_t*);
-
 class Musician
 {
 public:
     Musician(mysqlx_row_t*);
-    ~Musician();
+    ~Musician() {}
 
     int getID() const { return this->id; }
     std::string getName() const { return this->name; }
     std::string getAddress() const { return this->address; }
     std::string getPhone() const { return this->phone; }
     std::string getSkill() const { return this->skill; }
+
+    std::string toString() const 
+    { 
+        std::stringstream os; 
+        os << this->id << ", " << this->name << ", " << this->address+", " << this->phone << ", "<< this->skill;
+        return os.str(); 
+    }
 
 private:
     int id;
@@ -29,11 +33,18 @@ class Instrument
 {
 public:
     Instrument(mysqlx_row_t*);
-    ~Instrument();
+    ~Instrument() {}
 
     int getID() const { return this->id; }
     std::string getBrand() const { return this->brand; }
     std::string getType() const { return this->type; }
+
+    std::string toString() const 
+    { 
+        std::stringstream os; 
+        os << this->id << ", " << this->brand << ", " << this->type;
+        return os.str(); 
+    }
 
 private:
     int id;
@@ -45,10 +56,17 @@ class Producer
 {
 public:
     Producer(mysqlx_row_t*);
-    ~Producer();
+    ~Producer() {}
 
     int getID() const { return this->id; }
     std::string getName() const { return this->name; }
+
+    std::string toString() const 
+    { 
+        std::stringstream os; 
+        os << this->id << ", " << this->name;
+        return os.str(); 
+    }
 
 private:
     int id;
@@ -59,13 +77,20 @@ class Album
 {
 public:
     Album(mysqlx_row_t*);
-    ~Album();
+    ~Album() {}
 
     int getID() const { return this->id; }
     std::string getName() const { return this->name; }
     std::string getStartDate() const { return this->start; }
     std::string getEndDate() const { return this->end; }
     int getTracks() const { return this->tracks; }
+
+    std::string toString() const 
+    { 
+        std::stringstream os; 
+        os << this->id << ", " << this->name << ", " << this->start+", " << this->end << ", " << tracks;
+        return os.str(); 
+    }
 
 private:
     int id;
@@ -75,3 +100,25 @@ private:
     int tracks;
 };
 
+std::ostream& operator<<(std::ostream& os, const Musician& ob);
+std::ostream& operator<<(std::ostream& os, const Instrument& ob);
+std::ostream& operator<<(std::ostream& os, const Producer& ob);
+std::ostream& operator<<(std::ostream& os, const Album& ob);
+
+template<typename T>
+std::vector<T*> initArray(mysqlx_result_t* res)
+{
+    std::vector<T*> v;
+
+    mysqlx_row_t* row;
+    do
+    {
+        while( (row = mysqlx_row_fetch_one(res))!=NULL)
+        {
+            v.push_back(new T(row));
+        }
+    } while (RESULT_OK == mysqlx_next_result(res));
+    mysqlx_result_free(res);
+
+    return v;
+}

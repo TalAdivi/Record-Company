@@ -209,7 +209,9 @@ int initData()
  (8, 'Freddy Mercury', 'London', '028-959395', 'Singer & Player'),\
  (9, 'ABBA', 'Sweden', '634-850258', 'Singer & Player'),\
  (10, 'Danny Gonzales', 'Oragon', '078-123963', 'Singer'),\
- (11, 'TMG', 'Los Angeles', '063-847492', 'Singer');", MYSQLX_NULL_TERMINATED);
+ (11, 'TMG', 'Los Angeles', '063-847492', 'Singer'),\
+ (12, 'test', 'Los Angeles', '063-847492', 'Singer'),\
+ (13, 'test', 'Los Angeles', '063-847492', 'Singer');", MYSQLX_NULL_TERMINATED);
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
@@ -372,7 +374,7 @@ int userInterface()
 {
 	bool flag = true;
 	std::string tmp1;
-	std::string tmp1;
+	std::string tmp2;
 
 	std::cout << "Welcome to MusicCompany project" << std::endl << std::endl;
 
@@ -405,17 +407,28 @@ int userInterface()
 				std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl << std::endl;
 				std::cin >> tmp1 >> tmp2;
 				std::cout << std::endl;
-				if(albumsBetween(firstD,lastD) == -1)
+				if(albumsBetween(tmp1,tmp2) == -1)
 					std::cout << "Error occured while executing the sql query" << std::endl; 	
 			break;
 
 		case 2:
-				std::cout << "Plese input musician name" << std::endl;
-				std::cin >> tmp1 ;
-				musicianSongBetween(tmp1);
+				while(1)
+				{
+					std::cout << "Plese input musician name" << std::endl;
+					std::cin >> tmp1 ;
+					if(musicianSongBetween(tmp1) != 2)
+						break;
+				}
 			break;
 
 		case 3:
+				while(1)
+				{
+					std::cout << "Plese input musician name" << std::endl;
+					std::cin >> tmp1 ;
+					if(musicianAlbumBetween(tmp1) != 2)
+						break;
+				}
 			break;
 
 		case 4:
