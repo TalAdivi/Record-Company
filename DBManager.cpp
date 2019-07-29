@@ -674,7 +674,8 @@ int DataBase::popularInstrument()
     {
       if ((row = mysqlx_row_fetch_one(result)) != NULL)
       {
-        value = mysqlx_get_sint(row, 0, &x);
+        mysqlx_get_sint(row, 0, &x);
+        value = x;
       }
       else
       {
@@ -796,7 +797,8 @@ where E_Date  > '"+start+"' and E_Date < '"+end+"';";
     {
       if ((row = mysqlx_row_fetch_one(result)) != NULL)
       {
-        value = mysqlx_get_sint(row, 0, &x);
+        mysqlx_get_sint(row, 0, &x);
+        value = x;
       }
       else
       {
@@ -877,7 +879,8 @@ int DataBase::popularManufacterer()
     {
       if ((row = mysqlx_row_fetch_one(result)) != NULL)
       {
-        value = mysqlx_get_sint(row, 0, &x);
+        mysqlx_get_sint(row, 0, &x);
+        value = x;
       }
       else
       {

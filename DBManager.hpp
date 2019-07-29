@@ -5,18 +5,16 @@
 class DataBase
 {
 public:
-
-    DataBase(const char* username, const char* password)
+    DataBase(const char *username, const char *password)
     {
         strncpy(this->username, username, strlen(username));
         strncpy(this->password, password, strlen(password));
-       
-       this->username[strlen(username)] = '\0';
-       this->password[strlen(password)] = '\0';
 
+        this->username[strlen(username)] = '\0';
+        this->password[strlen(password)] = '\0';
     }
 
-    ~DataBase() { 	mysqlx_session_close(this->session); }
+    ~DataBase() { mysqlx_session_close(this->session); }
 
     int connect();
     int init();
@@ -36,9 +34,9 @@ public:
     int tracksInTwoAlbumsOrMore();
     int techniciansWorkedOnCompleteAlbum();
     int mostDiverseGenre();
-    
-private: 
-	mysqlx_session_t* session;
+
+private:
+    mysqlx_session_t *session;
     mysqlx_error_t *err;
     char username[256];
     char password[256];
