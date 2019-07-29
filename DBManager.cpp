@@ -1,47 +1,44 @@
 #include "includes.hpp"
 #include "DBManager.hpp"
 
-char username[256];
-char password[256];
-
-int initDB()
+int DataBase::connect()
 {
-	mysqlx_error_t *err;
-	mysqlx_stmt_t* query;
-	mysqlx_result_t* result;
-	mysqlx_session_t* session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, username, password, "", &err);
-
-	if (NULL == session) 
+	this->session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, this->username, this->password, "", &this->err);
+	if (NULL == this->session) 
 	{
-	 	std::cout << mysqlx_error_message(err) << "\t" << session << std::endl;
+	 	std::cout << mysqlx_error_message(this->err) << "\t" << this->session << std::endl;
 		return -1;
 	}
-	
-	//if database exists drop it and create it 
-	if (mysqlx_get_schema(session, "RecordCompany", 1)) 
+	return 0;
+}
+
+int DataBase::init()
+{
+	mysqlx_stmt_t* query;
+	mysqlx_result_t* result;
+
+	if (mysqlx_get_schema(this->session, "RecordCompany", 1)) 
 	{
-		query = mysqlx_sql_new(session, "DROP database `RecordCompany`", MYSQLX_NULL_TERMINATED);
+		query = mysqlx_sql_new(this->session, "DROP database `RecordCompany`", MYSQLX_NULL_TERMINATED);
 
 		if( (result = mysqlx_execute(query)) == NULL)
 			return -1;
 	}
 
-	query = mysqlx_sql_new(session, "create database `RecordCompany`", MYSQLX_NULL_TERMINATED);
+	query = mysqlx_sql_new(this->session, "create database `RecordCompany`", MYSQLX_NULL_TERMINATED);
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
 	mysqlx_session_close(session);
 
-	session =  mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, username, password, "RecordCompany", &err);
+	this->session =  mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, this->username, this->password, "RecordCompany", &err);
 	
-	if (NULL == session) 
+	if (NULL == this->session) 
 	{
-	 	std::cout << mysqlx_error_message(err) << "\t" << session << std::endl;
+	 	std::cout << mysqlx_error_message(this->err) << "\t" << this->session << std::endl;
 		return -1;
 	}
-
-	//create the main tables 
 
 	query = mysqlx_sql_new(session, "CREATE TABLE `musician` (\
   `id_musician` INT NOT NULL,\
@@ -55,7 +52,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `instrument` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `instrument` (\
   `I_id` INT NOT NULL UNIQUE,\
   `Brand` VARCHAR(256) NOT NULL,\
   `Type` VARCHAR(256) NOT NULL,\
@@ -65,7 +62,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `track` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `track` (\
   `T_id` INT NOT NULL,\
   `Name` VARCHAR(256) NOT NULL,\
   `Music_Compuser` VARCHAR(256) NULL,\
@@ -80,7 +77,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `album` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `album` (\
   `A_id` INT NOT NULL,\
   `Name` VARCHAR(256) NOT NULL,\
   `S_Date` VARCHAR(256) NOT NULL,\
@@ -92,7 +89,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `producer` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `producer` (\
   `p_ID` INT NOT NULL,\
   `Name` VARCHAR(256) NOT NULL,\
   PRIMARY KEY (`p_ID`));", MYSQLX_NULL_TERMINATED);
@@ -104,7 +101,7 @@ int initDB()
 
 	//Relations tables
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `musician_instrument` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `musician_instrument` (\
   `m_ID` INT NOT NULL,\
   `i_ID` INT NOT NULL,\
   PRIMARY KEY (`i_ID`, `m_ID`),\
@@ -123,7 +120,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `musician_tracks` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `musician_tracks` (\
   `m_ID` INT NOT NULL,\
   `t_ID` INT NOT NULL,\
   PRIMARY KEY (`m_ID`, `t_ID`),\
@@ -142,7 +139,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `album_track` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `album_track` (\
   `t_ID` INT NOT NULL,\
   `a_ID` INT NOT NULL,\
   PRIMARY KEY (`t_ID`, `a_ID`),\
@@ -161,7 +158,7 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session,"CREATE TABLE `album_producer` (\
+	query = mysqlx_sql_new(this->session,"CREATE TABLE `album_producer` (\
   `a_ID` INT NOT NULL,\
   `p_ID` INT NOT NULL,\
   PRIMARY KEY (`a_ID`, `p_ID`),\
@@ -180,25 +177,15 @@ int initDB()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	mysqlx_session_close(session);
-
-	return 1;
+	return 0;
 }
 
-int initData()
+int DataBase::build()
 {
-	mysqlx_error_t *err;
 	mysqlx_stmt_t* query;
 	mysqlx_result_t* result;
-	mysqlx_session_t* session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, username, password, "recordcompany", &err);
 
-	if (NULL == session) 
-	{
-	 	std::cout << mysqlx_error_message(err) << "\t" << session << std::endl;
-		return -1;
-	}
-
-	query = mysqlx_sql_new(session, "INSERT INTO `musician` (`id_musician`, `Name`, `Address`, `Phone`, `Skill`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `musician` (`id_musician`, `Name`, `Address`, `Phone`, `Skill`) VALUES\
  (1, 'Beethover', 'Austria', '098-909985', 'Player') ,\
  (2, 'Michael Jackson' ,'Los Angeles', '098-373489', 'Singer & Player'),\
  (3, 'James Cameron' ,'Los Angeles', '067-758937', 'Player'),\
@@ -216,7 +203,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `track` (`T_id`, `Name`, `Music_Compuser`, `Length`, `Lyrics_Composer`, `Date`, `Genre`, `Technician`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `track` (`T_id`, `Name`, `Music_Compuser`, `Length`, `Lyrics_Composer`, `Date`, `Genre`, `Technician`) VALUES\
  (1, 'Ode to Joy', 'Beethoven', 220, 'NULL', '1824-01-01', 'Classical', 'Beethoven'),\
  (2, 'We Will Rock You','Queen',250,'Freddy Mercury','1977-10-07','Rock','Bill McGree'),\
  (3, 'Toxic','Jack Hallow',164,'Kelsey Lowe','2004-01-13','Pop','Bill McGree'),\
@@ -231,7 +218,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `album` (`A_id`, `Name`, `S_Date`, `E_Date`, `Tracks_Number`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `album` (`A_id`, `Name`, `S_Date`, `E_Date`, `Tracks_Number`) VALUES\
  (1, 'Ode to Joy RErelease', '2015-04-15', '2015-04-29', 1),\
  (2, 'Johnny Johnny SINGLE', '2017-06-20', '2017-07-01', 1),\
  (3, 'Slime SINGLE', '2018-01-15', '2018-02-02', 1),\
@@ -246,7 +233,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `recordcompany`.`instrument` (`I_id`, `Brand`, `Type`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `recordcompany`.`instrument` (`I_id`, `Brand`, `Type`) VALUES\
  (1, 'Yamhaa', 'Piano'),\
  (2, 'Yamhaa', 'Synth'),\
  (3, 'Gibson', 'Bass'),\
@@ -261,7 +248,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `recordcompany`.`producer` (`p_ID`, `Name`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `recordcompany`.`producer` (`p_ID`, `Name`) VALUES\
  (1, 'Bill McGree'),\
  (2, 'Dr Dre'),\
  (3, 'Jay-Z'),\
@@ -276,7 +263,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `musician_instrument` (`m_ID`, `i_ID`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `musician_instrument` (`m_ID`, `i_ID`) VALUES\
  (1,1),\
  (2,2),\
  (2,5),\
@@ -294,7 +281,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 	
-	query = mysqlx_sql_new(session, "INSERT INTO `musician_tracks` (`m_ID`, `t_ID`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `musician_tracks` (`m_ID`, `t_ID`) VALUES\
  (1,1),\
  (2,10),\
  (3,10),\
@@ -313,7 +300,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 	
-	query = mysqlx_sql_new(session, "INSERT INTO `album_track`(`t_ID`, `a_ID`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `album_track`(`t_ID`, `a_ID`) VALUES\
  (1,1),\
  (4,2),\
  (5,3),\
@@ -342,7 +329,7 @@ int initData()
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
 
-	query = mysqlx_sql_new(session, "INSERT INTO `album_producer` (`a_ID`,`p_ID`) VALUES\
+	query = mysqlx_sql_new(this->session, "INSERT INTO `album_producer` (`a_ID`,`p_ID`) VALUES\
  (1,1),\
  (2,2),\
  (3,2),\
@@ -364,120 +351,6 @@ int initData()
 
 	if( (result = mysqlx_execute(query)) == NULL)
 		return -1;
-	
-	mysqlx_session_close(session);
-
-	return 1;
-}
-
-int userInterface()
-{
-	bool flag = true;
-	std::string tmp1;
-	std::string tmp2;
-
-	std::cout << "Welcome to MusicCompany project" << std::endl << std::endl;
-
-		int choice = 0;
-	do
-	{	
-		std::cout << " 1.\tHow many albums were created between two given dates\n\
- 2.\tHow many songs recored by a specific musician between two given dates\n\
- 3.\tHow many diffrent albums recorded specific musician between two given dates\n\
- 4.\tWhat is the most popular instrument\n\
- 5.\tList of instruments used in a specific album\n\
- 6.\tThe most popular album producer between two given dates\n\
- 7.\tThe most puplat manufacturer of an instrument\n\
- 8.\tHow many musicians recorded throughout the years\n\
- 9.\tThe musician who collaborated the most\n\
- 10.\tThe most popular music genre\n\
- 11.\tThe technician who worked on the most number of tracks between two given dates\n\
- 12.\tThe first album ever recorded\n\
- 13.\tList of tracks that were in two or more albums\n\
- 14.\tList of technicians that worked on complete albums\n\
- 15.\tThe musician with the most diverse musical genres \n\
- 16.\tExit Program.\n\n\
-		"<< std::endl;
-		std::cout << "Please choose function by number >\t";
-		std::cin >> choice;
-
-		switch (choice)
-		{
-		case 1:
-				std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl << std::endl;
-				std::cin >> tmp1 >> tmp2;
-				std::cout << std::endl;
-				if(albumsBetween(tmp1,tmp2) == -1)
-					std::cout << "Error occured while executing the sql query" << std::endl; 	
-			break;
-
-		case 2:
-				while(1)
-				{
-					std::cout << "Plese input musician name" << std::endl;
-					std::cin >> tmp1 ;
-					if(musicianSongBetween(tmp1) != 2)
-						break;
-				}
-			break;
-
-		case 3:
-				while(1)
-				{
-					std::cout << "Plese input musician name" << std::endl;
-					std::cin >> tmp1 ;
-					if(musicianAlbumBetween(tmp1) != 2)
-						break;
-				}
-			break;
-
-		case 4:
-			break;
-
-		case 5:
-			break;
-
-		case 6:
-			break;
-
-		case 7:
-			break;
-
-		case 8:
-			break;
-
-		case 9:
-			break;
-
-		case 10:
-			break;
-
-		case 11:
-			break;
-
-		case 12:
-			break;
-
-		case 13:
-			break;
-
-		case 14:
-			break;
-
-		case 15:
-			break;
-
-		case 16: 
-				flag = false;
-				std::cout << std::endl << "Goodbye" << std::endl;
-			break;
 		
-		default:
-			std::cout << "Incorrect number ! this choice does not exist please re enter" << std::endl;
-			break;
-		}
-		std::cout << " ---------------------------------------------------------------------- " << std::endl << std::endl;
-	}while(flag);
-
-	return 1;
+	return 0;
 }

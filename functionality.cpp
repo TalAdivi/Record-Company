@@ -1,7 +1,7 @@
 #include "functionality.hpp"
 
-extern char username[256];
-extern char password[256];
+char username[256];
+char password[256];
 
 int albumsBetween(std::string start, std::string end)
 {
@@ -215,3 +215,4 @@ int musicianAlbumBetween(std::string name)
 
     return 0;
 }
+
