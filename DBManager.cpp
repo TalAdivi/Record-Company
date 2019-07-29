@@ -417,7 +417,7 @@ int DataBase::musicianSongBetween(std::string name)
 
   if ((result = mysqlx_execute(query)) == NULL)
   {
-    std::cout << "There is no musician with this name" << std::endl;
+    std::cout << "There was an error executing the Query" << std::endl;
     return -1;
   }
 
@@ -467,7 +467,7 @@ int DataBase::musicianSongBetween(std::string name)
 
   if ((result = mysqlx_execute(query)) == NULL)
   {
-    std::cout << "There is no musician with this name" << std::endl;
+    std::cout << "There was an error executing the Query" << std::endl;
     return -1;
   }
 
@@ -502,7 +502,7 @@ int DataBase::musicianAlbumBetween(std::string name)
 
   if ((result = mysqlx_execute(query)) == NULL)
   {
-    std::cout << "There is no musician with this name" << std::endl;
+    std::cout << "There was an error executing the Query" << std::endl;
     return -1;
   }
 
@@ -554,7 +554,7 @@ int DataBase::musicianAlbumBetween(std::string name)
 
   if ((result = mysqlx_execute(query)) == NULL)
   {
-    std::cout << "There is no musician with this name" << std::endl;
+    std::cout << "There was an error executing the Query" << std::endl;
     return -1;
   }
 
@@ -589,7 +589,7 @@ int DataBase::popularInstrument()
 
   if ((result = mysqlx_execute(query)) == NULL)
   {
-    std::cout << "There is no musician with this name" << std::endl;
+    std::cout << "There was an error executing the Query" << std::endl;
     return -1;
   }
 
@@ -619,7 +619,7 @@ int DataBase::popularInstrument()
         std::cout << "There was an error running the Query." << std::endl;
       }
 
-      if( value > max )
+      if (value > max)
       {
         max = value;
         index = i;
@@ -627,7 +627,215 @@ int DataBase::popularInstrument()
     }
   }
 
-  std::cout << "The most popular instrument is:\t" << *v[index] << std::endl;
+  if (max == -1 || index == -1)
+    std::cout << "There was an error running the Query." << std::endl;
+  else
+    std::cout << "The most popular instrument is:\t" << v[index]->getBrand() << ", " << v[index]->getType() << std::endl;
+
+  mysqlx_free(result);
+  freeVector(v);
+  return 0;
+}
+
+int DataBase::instrumentsInAlbum(std::string name)
+{
+  mysqlx_stmt_t *query;
+  mysqlx_result_t *result;
+
+  std::string qstr = "SELECT * FROM Album where Name Like '%" + name + "%';\0";
+  query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
+  if ((result = mysqlx_execute(query)) == NULL)
+  {
+    std::cout << "There was an error executing the Query" << std::endl;
+    return -1;
+  }
+
+  std::vector<Album *> album = initArray<Album>(result);
+
+  if (album.size() == 0)
+  {
+    std::cout << "There is no user with that name want to try again ? y/n";
+    char c;
+    std::cin >> c;
+    if (c == 'y' || c == 'Y')
+      return 2;
+    else
+      return -1;
+  }
+
+  qstr = "select * from instrument as i join\
+ (select i_ID from musician_instrument as mi join\
+ (select m_ID from Album_Track as a  join musician_tracks as b on a.t_ID = b.t_ID where a.a_id = " +
+         std::to_string(album[0]->getID()) + ")\
+ as mb on mi.m_ID = mb.m_ID) as b on i.I_id = b.I_id ;\0";
+
+  query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
+  if ((result = mysqlx_execute(query)) == NULL)
+  {
+    std::cout << "There is no musician with this name" << std::endl;
+    return -1;
+  }
+
+  std::vector<Instrument *> v = initArray<Instrument>(result);
+
+  if (v.size() == 0)
+    std::cout << "No instruments were used in this album" << std::endl;
+  else
+  {
+    std::cout << "Instruments used in this album are :" << std::endl;
+    std::cout << std::endl
+              << "Index\tID, Brand, Type" << std::endl;
+    std::cout << "------------------------------" << std::endl;
+    for (int i = 0; i < v.size(); ++i)
+      std::cout << i + 1 << ".\t" << *v[i] << std::endl;
+  }
+  std::cout << std::endl;
+
+  mysqlx_free(result);
+  freeVector(album);
+  freeVector(v);
+  return 0;
+}
+
+int DataBase::producerOfAlbumBetween(std::string start, std::string end)
+{
+  mysqlx_stmt_t *query;
+  mysqlx_result_t *result;
+
+  std::string qstr = "SELECT * FROM Producer;\0";
+  query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
+  if ((result = mysqlx_execute(query)) == NULL)
+  {
+    std::cout << "There was an error executing the Query" << std::endl;
+    return -1;
+  }
+
+  std::vector<Producer *> v = initArray<Producer>(result);
+
+  int max = -1;
+  int index = -1;
+
+  mysqlx_row_t *row;
+  int64_t x;
+
+  std::vector<int> popular;
+
+  for (int i = 0; i < v.size(); ++i)
+  {
+
+    qstr = "SELECT count(*) from (\
+ (SELECT * FROM musician_instrument where i_ID = " +
+           std::to_string(v[i]->getID()) + ") as a join musician_tracks as b \
+ on a.m_ID = b.m_ID);";
+
+    int value = 0;
+    if ((result = mysqlx_execute(query)) != NULL)
+    {
+      if ((row = mysqlx_row_fetch_one(result)) != NULL)
+      {
+        value = mysqlx_get_sint(row, 0, &x);
+      }
+      else
+      {
+        std::cout << "There was an error running the Query." << std::endl;
+      }
+
+      if (value > max)
+      {
+        max = value;
+        index = i;
+      }
+    }
+  }
+
+  if (max == -1 || index == -1)
+    std::cout << "There was an error running the Query." << std::endl;
+  else
+    std::cout << "The most popular Producer is:\t" << v[index]->getName() << std::endl;
+
+  mysqlx_free(result);
+  freeVector(v);
+
+  return 0;
+}
+
+int getIndex(std::vector<std::string> &v, std::string val)
+{
+  for (int i = 0; i < v.size(); ++i)
+    if (v[i] == val)
+      return i;
+  return -1;
+}
+
+int findMax(std::vector<int> &v)
+{
+  int max = v[0];
+  for (int i = 1; i < v.size(); ++i)
+    if (v[i] > max)
+      max = v[i];
+  return max;
+}
+
+int DataBase::popularManufacterer()
+{
+  mysqlx_stmt_t *query;
+  mysqlx_result_t *result;
+
+  std::vector<std::string> manufacterers;
+  std::vector<int> count;
+
+  mysqlx_row_t *row;
+  int64_t x;
+
+  std::string qstr = "SELECT * FROM Instrument;\0";
+  query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
+  if ((result = mysqlx_execute(query)) == NULL)
+  {
+    std::cout << "There was an error executing the Query" << std::endl;
+    return -1;
+  }
+
+  std::vector<Instrument *> v = initArray<Instrument>(result);
+
+  for (int i = 0; i < v.size(); ++i)
+  {
+    qstr = "SELECT count(*) from (\
+ (SELECT * FROM musician_instrument where i_ID = " +
+           std::to_string(v[i]->getID()) + ") as a join musician_tracks as b\
+ on a.m_ID = b.m_ID);";
+
+    int value = 0;
+    if ((result = mysqlx_execute(query)) != NULL)
+    {
+      if ((row = mysqlx_row_fetch_one(result)) != NULL)
+      {
+        value = mysqlx_get_sint(row, 0, &x);
+      }
+      else
+      {
+        std::cout << "There was an error running the Query." << std::endl;
+      }
+
+      if (true)
+      {
+        manufacterers.push_back(v[i]->getBrand());
+        count.push_back(x);
+      }
+      else
+      {
+        int index;
+        if ((index = getIndex(manufacterers, v[i]->getBrand())) != -1)
+          ;
+        count[index] += x;
+      }
+    }
+  }
+
+  std::cout << "The most Popular Manufacterer is :" << v[findMax(count)] << std::endl;
 
   return 0;
 }

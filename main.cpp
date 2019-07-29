@@ -58,7 +58,7 @@ int userInterface(DataBase &db)
  4.\tWhat is the most popular instrument\n\
  5.\tList of instruments used in a specific album\n\
  6.\tThe most popular album producer between two given dates\n\
- 7.\tThe most puplat manufacturer of an instrument\n\
+ 7.\tThe most popular manufacturer of an instrument\n\
  8.\tHow many musicians recorded throughout the years\n\
  9.\tThe musician who collaborated the most\n\
  10.\tThe most popular music genre\n\
@@ -108,13 +108,27 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
-
 			break;
 
 		case 5:
+			while (1)
+			{
+				std::cout << "Plese input musician name" << std::endl;
+				std::cout << "Plese input Album name" << std::endl;
+				std::cin >> tmp1;
+				if (db.instrumentsInAlbum(tmp1) != 2)
+					break;
+			}
+
 			break;
 
 		case 6:
+			std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl
+					  << std::endl;
+			std::cin >> tmp1 >> tmp2;
+			std::cout << std::endl;
+			if (db.producerOfAlbumBetween(tmp1, tmp2) == -1)
+				std::cout << "Error occured while executing the sql query" << std::endl;
 			break;
 
 		case 7:
@@ -154,7 +168,8 @@ int userInterface(DataBase &db)
 			std::cout << "Incorrect number ! this choice does not exist please re enter" << std::endl;
 			break;
 		}
-		std::cout << " ---------------------------------------------------------------------- " << std::endl
+		std::cout << std::endl
+				  << " ---------------------------------------------------------------------- " << std::endl
 				  << std::endl;
 	} while (flag);
 

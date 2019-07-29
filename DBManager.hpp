@@ -21,7 +21,10 @@ public:
     int musicianSongBetween(std::string name);
     int musicianAlbumBetween(std::string name);
     int popularInstrument();
-
+    int instrumentsInAlbum(std::string name);
+    int producerOfAlbumBetween(std::string start, std::string end);
+    int popularManufacterer();
+    
 private: 
 	mysqlx_session_t* session;
     mysqlx_error_t *err;
