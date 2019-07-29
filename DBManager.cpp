@@ -784,15 +784,12 @@ int DataBase::producerOfAlbumBetween(std::string start, std::string end)
   mysqlx_row_t *row;
   int64_t x;
 
-  std::vector<int> popular;
-
   for (int i = 0; i < v.size(); ++i)
   {
 
-    qstr = "SELECT count(*) from (\
- (SELECT * FROM musician_instrument where i_ID = " +
-           std::to_string(v[i]->getID()) + ") as a join musician_tracks as b \
- on a.m_ID = b.m_ID);";
+    qstr = "select count(*) from (\
+(SELECT * FROM album_producer where p_ID = "+std::to_string(v[i]->getID())+") as a join album as b on a.a_ID = b.A_id )\
+where E_Date  > '"+start+"' and E_Date < '"+end+"';";
 
     int value = 0;
     if ((result = mysqlx_execute(query)) != NULL)
