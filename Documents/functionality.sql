@@ -8,11 +8,13 @@ select count(*) from track as t join musician_tracks as m on \
  m.t_ID = t.T_id where m_ID = "id " and t.Date > '" + start + "' and t.Date < '" + end + "';
 
 /*3*/
- select musician.id_musician from musician where name = "TMG"
+select * from musician where Name Like '%" + name + "%';
 
-select count(*) from (select a_ID from( (select * from album_track) as a INNER JOIN
-(select * from musician_tracks where musician_tracks.m_ID =) as b
-on a.t_ID = b.t_ID) group by a_ID ) as c; name
+select count(*) from album as ab join (select a_ID from( (select * from album_track) as a INNER JOIN\
+ (select * from musician_tracks where musician_tracks.m_ID = " +
+         std::to_string(v[choice - 1]->getID()) + ") as b\
+ on a.t_ID = b.t_ID) group by a_ID ) as c on ab.A_id = c.a_ID where E_Date > '" +
+         start + "' and E_Date < '" + end + "' ;
 
 /*4*/
 
