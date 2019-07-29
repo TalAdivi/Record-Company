@@ -835,7 +835,7 @@ int DataBase::popularManufacterer()
     }
   }
 
-  std::cout << "The most Popular Manufacterer is :" << v[findMax(count)] << std::endl;
+  std::cout << "The most Popular Manufacterer is :" << manufacterers[findMax(count)] << std::endl;
 
   return 0;
 }
