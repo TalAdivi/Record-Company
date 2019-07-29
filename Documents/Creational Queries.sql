@@ -55,12 +55,12 @@ CREATE TABLE `musician_instrument` (
   INDEX `MI_mID_idx` (`m_ID` ASC) VISIBLE,
   CONSTRAINT `MI_mID`
     FOREIGN KEY (`m_ID`)
-    REFERENCES `recordcompany`.`musician` (`id_musician`)
+    REFERENCES `musician` (`id_musician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `MI_iID`
     FOREIGN KEY (`i_ID`)
-    REFERENCES `recordcompany`.`instrument` (`I_id`)
+    REFERENCES `instrument` (`I_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -73,12 +73,12 @@ CREATE TABLE `musician_tracks` (
   INDEX `MT_tID_idx` (`t_ID` ASC) VISIBLE,
   CONSTRAINT `MT_mID`
     FOREIGN KEY (`m_ID`)
-    REFERENCES `recordcompany`.`musician` (`id_musician`)
+    REFERENCES `musician` (`id_musician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `MT_tID`
     FOREIGN KEY (`t_ID`)
-    REFERENCES `recordcompany`.`track` (`T_id`)
+    REFERENCES `track` (`T_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -91,12 +91,12 @@ CREATE TABLE `album_track` (
   INDEX `AT_aID_idx` (`a_ID` ASC) VISIBLE,
   CONSTRAINT `AT_tID`
     FOREIGN KEY (`t_ID`)
-    REFERENCES `recordcompany`.`track` (`T_id`)
+    REFERENCES `track` (`T_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `AT_aID`
     FOREIGN KEY (`a_ID`)
-    REFERENCES `recordcompany`.`album` (`A_id`)
+    REFERENCES `album` (`A_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -109,11 +109,11 @@ CREATE TABLE `album_producer` (
   INDEX `AP_pID_idx` (`p_ID` ASC) VISIBLE,
   CONSTRAINT `AP_aID`
     FOREIGN KEY (`a_ID`)
-    REFERENCES `recordcompany`.`album` (`A_id`)\
+    REFERENCES `album` (`A_id`)\
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `AP_pID`
     FOREIGN KEY (`p_ID`)
-    REFERENCES `recordcompany`.`producer` (`p_ID`)
+    REFERENCES `producer` (`p_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);

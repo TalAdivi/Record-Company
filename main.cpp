@@ -45,6 +45,7 @@ int userInterface(DataBase &db)
 	bool flag = true;
 	std::string tmp1;
 	std::string tmp2;
+	std::string clear;
 
 	std::cout << "Welcome to MusicCompany project" << std::endl
 			  << std::endl;
@@ -87,7 +88,8 @@ int userInterface(DataBase &db)
 			while (1)
 			{
 				std::cout << "Plese input musician name" << std::endl;
-				std::cin >> tmp1;
+				std::getline(std::cin, clear);
+				std::getline(std::cin, tmp1);
 				if (db.musicianSongBetween(tmp1) != 2)
 					break;
 			}
@@ -97,7 +99,8 @@ int userInterface(DataBase &db)
 			while (1)
 			{
 				std::cout << "Plese input musician name" << std::endl;
-				std::cin >> tmp1;
+				std::getline(std::cin, clear);
+				std::getline(std::cin, tmp1);
 				if (db.musicianAlbumBetween(tmp1) != 2)
 					break;
 			}
@@ -113,9 +116,9 @@ int userInterface(DataBase &db)
 		case 5:
 			while (1)
 			{
-				std::cout << "Plese input musician name" << std::endl;
 				std::cout << "Plese input Album name" << std::endl;
-				std::cin >> tmp1;
+				std::getline(std::cin,clear);
+				std::getline(std::cin, tmp1);
 				if (db.instrumentsInAlbum(tmp1) != 2)
 					break;
 			}
@@ -139,27 +142,63 @@ int userInterface(DataBase &db)
 			break;
 
 		case 8:
+			if (db.amountMusicianThroughoutYears() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 9:
+			if (db.musicianCollaboratedMost() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 10:
+			if (db.popularGenre() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 11:
+			std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl
+					  << std::endl;
+			std::cin >> tmp1 >> tmp2;
+			std::cout << std::endl;
+			if (db.theMostTech(tmp1, tmp2) == -1)
+				std::cout << "Error occured while executing the sql query" << std::endl;
+
 			break;
 
 		case 12:
+			if (db.firstAlbum() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 13:
+			if (db.tracksInTwoAlbumsOrMore() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
+
 			break;
 
 		case 14:
+			if (db.techniciansWorkedOnCompleteAlbum() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 15:
+			if (db.mostDiverseGenre() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 16:
