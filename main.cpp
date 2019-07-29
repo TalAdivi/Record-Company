@@ -1,8 +1,4 @@
-#include "includes.hpp"
 #include "DBManager.hpp"
-
-extern char username[256];
-extern char password[256];
 
 int userInterface(DataBase& db);
 
@@ -40,12 +36,12 @@ int main(int argc, char *argv[])
 	
 	std::cout << "Data inserted successfully" << std::endl;
 
-	//userInterface(db);
+	userInterface(db);
 	return 0;
 }
 
 
-int userInterface()
+int userInterface(DataBase& db)
 {
 	bool flag = true;
 	std::string tmp1;
@@ -82,7 +78,7 @@ int userInterface()
 				std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl << std::endl;
 				std::cin >> tmp1 >> tmp2;
 				std::cout << std::endl;
-				if(albumsBetween(tmp1,tmp2) == -1)
+				if(db.albumsBetween(tmp1,tmp2) == -1)
 					std::cout << "Error occured while executing the sql query" << std::endl; 	
 			break;
 
@@ -91,7 +87,7 @@ int userInterface()
 				{
 					std::cout << "Plese input musician name" << std::endl;
 					std::cin >> tmp1 ;
-					if(musicianSongBetween(tmp1) != 2)
+					if(db.musicianSongBetween(tmp1) != 2)
 						break;
 				}
 			break;
@@ -101,7 +97,7 @@ int userInterface()
 				{
 					std::cout << "Plese input musician name" << std::endl;
 					std::cin >> tmp1 ;
-					if(musicianAlbumBetween(tmp1) != 2)
+					if(db.musicianAlbumBetween(tmp1) != 2)
 						break;
 				}
 			break;

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "includes.hpp"
-#include "functionality.hpp"
-
 
 class DataBase
 {
@@ -20,6 +18,9 @@ public:
     int connect();
     int init();
     int build();
+    int albumsBetween(std::string start, std::string end);
+    int musicianSongBetween(std::string name);
+    int musicianAlbumBetween(std::string name);
 
 private: 
 	mysqlx_session_t* session;
