@@ -132,6 +132,10 @@ int userInterface(DataBase &db)
 			break;
 
 		case 7:
+			if (db.popularManufacterer() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
 			break;
 
 		case 8:

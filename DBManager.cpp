@@ -820,7 +820,7 @@ int DataBase::popularManufacterer()
         std::cout << "There was an error running the Query." << std::endl;
       }
 
-      if (true)
+      if (getIndex(manufacterers, v[i]->getBrand())==-1)
       {
         manufacterers.push_back(v[i]->getBrand());
         count.push_back(x);
