@@ -1,18 +1,18 @@
 #include "DBManager.hpp"
 
-int userInterface(DataBase& db);
+int userInterface(DataBase &db);
 
 int main(int argc, char *argv[])
 {
-	if(argc < 3)
+	if (argc < 3)
 	{
 		std::cout << "Please insert connection details" << std::endl;
 		exit(-1);
 	}
 
-	DataBase db(argv[1],argv[2]);
+	DataBase db(argv[1], argv[2]);
 
-	if(db.connect() == -1)
+	if (db.connect() == -1)
 	{
 		std::cout << "Incorrect connnection made please reacheck username and password" << std::endl;
 		exit(-1);
@@ -20,38 +20,38 @@ int main(int argc, char *argv[])
 
 	std::cout << "Connected successfully" << std::endl;
 
-	if(db.init() == -1)
+	if (db.init() == -1)
 	{
-		std::cout<< "There was an error with DB initlization" << std::endl;
+		std::cout << "There was an error with DB initlization" << std::endl;
 		exit(-1);
 	}
 
 	std::cout << "DB initlized successfully" << std::endl;
 
-	if(db.build() == -1)
+	if (db.build() == -1)
 	{
-		std::cout<< "There was an error with Data initlization" << std::endl;
+		std::cout << "There was an error with Data initlization" << std::endl;
 		exit(-1);
 	}
-	
+
 	std::cout << "Data inserted successfully" << std::endl;
 
 	userInterface(db);
 	return 0;
 }
 
-
-int userInterface(DataBase& db)
+int userInterface(DataBase &db)
 {
 	bool flag = true;
 	std::string tmp1;
 	std::string tmp2;
 
-	std::cout << "Welcome to MusicCompany project" << std::endl << std::endl;
+	std::cout << "Welcome to MusicCompany project" << std::endl
+			  << std::endl;
 
-		int choice = 0;
+	int choice = 0;
 	do
-	{	
+	{
 		std::cout << " 1.\tHow many albums were created between two given dates\n\
  2.\tHow many songs recored by a specific musician between two given dates\n\
  3.\tHow many diffrent albums recorded specific musician between two given dates\n\
@@ -68,42 +68,47 @@ int userInterface(DataBase& db)
  14.\tList of technicians that worked on complete albums\n\
  15.\tThe musician with the most diverse musical genres \n\
  16.\tExit Program.\n\n\
-		"<< std::endl;
+		" << std::endl;
 		std::cout << "Please choose function by number >\t";
 		std::cin >> choice;
 
 		switch (choice)
 		{
 		case 1:
-				std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl << std::endl;
-				std::cin >> tmp1 >> tmp2;
-				std::cout << std::endl;
-				if(db.albumsBetween(tmp1,tmp2) == -1)
-					std::cout << "Error occured while executing the sql query" << std::endl; 	
+			std::cout << "Please input the two dates ( Year-Month-Day )" << std::endl
+					  << std::endl;
+			std::cin >> tmp1 >> tmp2;
+			std::cout << std::endl;
+			if (db.albumsBetween(tmp1, tmp2) == -1)
+				std::cout << "Error occured while executing the sql query" << std::endl;
 			break;
 
 		case 2:
-				while(1)
-				{
-					std::cout << "Plese input musician name" << std::endl;
-					std::cin >> tmp1 ;
-					if(db.musicianSongBetween(tmp1) != 2)
-						break;
-				}
+			while (1)
+			{
+				std::cout << "Plese input musician name" << std::endl;
+				std::cin >> tmp1;
+				if (db.musicianSongBetween(tmp1) != 2)
+					break;
+			}
 			break;
 
 		case 3:
-				while(1)
-				{
-					std::cout << "Plese input musician name" << std::endl;
-					std::cin >> tmp1 ;
-					if(db.musicianAlbumBetween(tmp1) != 2)
-						break;
-				}
+			while (1)
+			{
+				std::cout << "Plese input musician name" << std::endl;
+				std::cin >> tmp1;
+				if (db.musicianAlbumBetween(tmp1) != 2)
+					break;
+			}
 			break;
 
 		case 4:
-		
+			if (db.popularInstrument() == -1)
+			{
+				std::cout << "Error occured while executing the sql query" << std::endl;
+			}
+
 			break;
 
 		case 5:
@@ -139,17 +144,19 @@ int userInterface(DataBase& db)
 		case 15:
 			break;
 
-		case 16: 
-				flag = false;
-				std::cout << std::endl << "Goodbye" << std::endl;
+		case 16:
+			flag = false;
+			std::cout << std::endl
+					  << "Goodbye" << std::endl;
 			break;
-		
+
 		default:
 			std::cout << "Incorrect number ! this choice does not exist please re enter" << std::endl;
 			break;
 		}
-		std::cout << " ---------------------------------------------------------------------- " << std::endl << std::endl;
-	}while(flag);
+		std::cout << " ---------------------------------------------------------------------- " << std::endl
+				  << std::endl;
+	} while (flag);
 
 	return 1;
 }

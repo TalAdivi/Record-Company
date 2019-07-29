@@ -1,5 +1,12 @@
 #include "DBManager.hpp"
 
+template <typename T>
+void freeVector(std::vector<T *> v)
+{
+  for (int i = 0; i < v.size(); ++i)
+    delete v[i];
+}
+
 int DataBase::connect()
 {
   this->session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, this->username, this->password, "", &this->err);
@@ -383,12 +390,16 @@ int DataBase::albumsBetween(std::string start, std::string end)
   mysqlx_row_t *row;
   int64_t x;
 
-  while ((row = mysqlx_row_fetch_one(result)) != NULL)
+  if ((row = mysqlx_row_fetch_one(result)) != NULL)
   {
     mysqlx_get_sint(row, 0, &x);
     std::cout << "The amount of albums between " << start << " and " << end << " are : " << x << std::endl
               << std::endl
               << std::endl;
+  }
+  else
+  {
+    std::cout << "There was an error running the Query." << std::endl;
   }
 
   mysqlx_free(result);
@@ -463,15 +474,20 @@ int DataBase::musicianSongBetween(std::string name)
   mysqlx_row_t *row;
   int64_t x;
 
-  while ((row = mysqlx_row_fetch_one(result)) != NULL)
+  if ((row = mysqlx_row_fetch_one(result)) != NULL)
   {
     mysqlx_get_sint(row, 0, &x);
     std::cout << "The amount of tracks that " << v[choice - 1]->getName() << " preformed between " << start << " and " << end << " are : " << x << std::endl
               << std::endl
               << std::endl;
   }
+  else
+  {
+    std::cout << "There was an error running the Query." << std::endl;
+  }
 
   mysqlx_free(result);
+  freeVector(v);
 
   return 0;
 }
@@ -528,8 +544,6 @@ int DataBase::musicianAlbumBetween(std::string name)
   std::cout << "Please input the start and end date (YEAR-MONTH-DAY)" << std::endl;
   std::cin >> start >> end;
 
-  std::cout << v[choice - 1]->getID() << std::endl;
-
   qstr = "select count(*) from album as ab join (select a_ID from( (select * from album_track) as a INNER JOIN\
  (select * from musician_tracks where musician_tracks.m_ID = " +
          std::to_string(v[choice - 1]->getID()) + ") as b\
@@ -547,15 +561,73 @@ int DataBase::musicianAlbumBetween(std::string name)
   mysqlx_row_t *row;
   int64_t x;
 
-  while ((row = mysqlx_row_fetch_one(result)) != NULL)
+  if ((row = mysqlx_row_fetch_one(result)) != NULL)
   {
     mysqlx_get_sint(row, 0, &x);
     std::cout << "The amount of Albums that " << v[choice - 1]->getName() << " released between " << start << " and " << end << " are : " << x << std::endl
               << std::endl
               << std::endl;
   }
+  else
+  {
+    std::cout << "There was an error running the Query." << std::endl;
+  }
 
   mysqlx_free(result);
+  freeVector(v);
+  return 0;
+}
+
+int DataBase::popularInstrument()
+{
+
+  mysqlx_stmt_t *query;
+  mysqlx_result_t *result;
+
+  std::string qstr = "SELECT * FROM instrument;\0";
+  query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
+  if ((result = mysqlx_execute(query)) == NULL)
+  {
+    std::cout << "There is no musician with this name" << std::endl;
+    return -1;
+  }
+
+  std::vector<Instrument *> v = initArray<Instrument>(result);
+  int max = -1;
+  int index = -1;
+
+  mysqlx_row_t *row;
+  int64_t x;
+
+  for (int i = 0; i < v.size(); ++i)
+  {
+    qstr = "SELECT count(*) from (\
+ (SELECT * FROM musician_instrument where i_ID = " +
+           std::to_string(v[i]->getID()) + ") as a join musician_tracks as b \
+ on a.m_ID = b.m_ID);";
+    int value = -1;
+
+    if ((result = mysqlx_execute(query)) != NULL)
+    {
+      if ((row = mysqlx_row_fetch_one(result)) != NULL)
+      {
+        value = mysqlx_get_sint(row, 0, &x);
+      }
+      else
+      {
+        std::cout << "There was an error running the Query." << std::endl;
+      }
+
+      if( value > max )
+      {
+        max = value;
+        index = i;
+      }
+    }
+  }
+
+  std::cout << "The most popular instrument is:\t" << *v[index] << std::endl;
 
   return 0;
 }
