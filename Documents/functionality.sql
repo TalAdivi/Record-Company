@@ -2,6 +2,7 @@
 	*TO SEE SAME NAME DIFF ID*
  same singer name == berry //question 2
  same album name == By The Way	//question 5
+ same album name == slim // question 5 becuase of Like!
 
 */
 

@@ -7,6 +7,13 @@ void freeVector(std::vector<T *> v)
     delete v[i];
 }
 
+int correctFormat(std::string date)
+{
+    if(date.length() != 10 || date[4] != '-' || date[7] != '-')
+        return -1;
+    return 0;
+}
+
 int DataBase::connect()
 {
   this->session = mysqlx_get_session("localhost", DEFAULT_MYSQLX_PORT, this->username, this->password, "", &this->err);
@@ -551,6 +558,12 @@ int DataBase::musicianSongBetween(std::string name)
   std::cout << "Please input the start and end date (YEAR-MONTH-DAY)" << std::endl;
   std::cin >> start >> end;
 
+  if (correctFormat(start) == -1 || correctFormat(end) == -1)
+  {
+    std::cout << "incorrect date format please re-try" << std::endl;
+    return -1;
+  }
+
   qstr = "select count(*) from track as t join musician_tracks as m on \
  m.t_ID = t.T_id where m_ID = " +
          std::to_string(v[choice - 1]->getID()) + " and t.Date > '" + start + "' and t.Date < '" + end + "';\0";
@@ -736,7 +749,7 @@ int DataBase::instrumentsInAlbum(std::string name) // two albums same name ?
 {
   mysqlx_stmt_t *query;
   mysqlx_result_t *result;
-  int choise = 0;
+  int choise = 1;
 
   std::string qstr = "SELECT * FROM Album where Name Like '%" + name + "%';\0";
   query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
@@ -803,7 +816,7 @@ int DataBase::instrumentsInAlbum(std::string name) // two albums same name ?
 
   if (v.size() == 0)
     std::cout << std::endl
-              << "No instruments were used in " + album[0]->getName() << std::endl;
+              << "No instruments were used in " + album[choise-1]->getName() << std::endl;
   else
   {
     std::cout << "Instruments used in this album are :" << std::endl
@@ -1422,10 +1435,6 @@ int DataBase::mostDiverseGenre()
           max = value;
         }
       }
-      else
-      {
-        std::cout << "There was an error running the Query." << std::endl;
-      }
     }
   }
 
@@ -1434,5 +1443,8 @@ int DataBase::mostDiverseGenre()
   else
     std::cout << "The musician with the most diverse musical genres is :" << v[index]->getName() << std::endl;
 
+  mysqlx_free(result);
+  freeVector(v);
+  
   return 0;
 }

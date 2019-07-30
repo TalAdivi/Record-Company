@@ -1,6 +1,7 @@
 #include "DBManager.hpp"
 
 int userInterface(DataBase &db);
+extern int correctFormat(std::string date);
 
 int main(int argc, char *argv[])
 {
@@ -83,14 +84,19 @@ int userInterface(DataBase &db)
 					  << std::endl;
 			std::cin >> tmp1 >> tmp2;
 			std::cout << std::endl;
-			if (db.albumsBetween(tmp1, tmp2) == -1)
-				std::cout << "Error occured while executing the sql query" << std::endl;
-			std::cout << std::endl
-					  << "Press any key to continue..."
-					  << std::endl;
-			getchar();
-			getchar();
-			std::cout << std::endl;
+			if (correctFormat(tmp1) == -1 || correctFormat(tmp2) == -1)
+				std::cout << "incorrect date format please re-try" << std::endl;
+			else
+			{
+				if (db.albumsBetween(tmp1, tmp2) == -1)
+					std::cout << "Error occured while executing the sql query" << std::endl;
+				std::cout << std::endl
+						  << "Press any key to continue..."
+						  << std::endl;
+				getchar();
+				getchar();
+				std::cout << std::endl;
+			}
 			break;
 
 		case 2:
@@ -166,14 +172,19 @@ int userInterface(DataBase &db)
 					  << std::endl;
 			std::cin >> tmp1 >> tmp2;
 			std::cout << std::endl;
-			if (db.producerOfAlbumBetween(tmp1, tmp2) == -1)
-				std::cout << "Error occured while executing the sql query" << std::endl;
-			std::cout << std::endl
-					  << "Press any key to continue..."
-					  << std::endl;
-			getchar();
-			getchar();
-			std::cout << std::endl;
+			if (correctFormat(tmp1) == -1 || correctFormat(tmp2) == -1)
+				std::cout << "incorrect date format please re-try" << std::endl;
+			else
+			{
+				if (db.producerOfAlbumBetween(tmp1, tmp2) == -1)
+					std::cout << "Error occured while executing the sql query" << std::endl;
+				std::cout << std::endl
+						  << "Press any key to continue..."
+						  << std::endl;
+				getchar();
+				getchar();
+				std::cout << std::endl;
+			}
 			break;
 
 		case 7:
@@ -233,14 +244,19 @@ int userInterface(DataBase &db)
 					  << std::endl;
 			std::cin >> tmp1 >> tmp2;
 			std::cout << std::endl;
-			if (db.theMostTech(tmp1, tmp2) == -1)
-				std::cout << "Error occured while executing the sql query" << std::endl;
-			std::cout << std::endl
-					  << "Press any key to continue..."
-					  << std::endl;
-			getchar();
-			getchar();
-			std::cout << std::endl;
+			if (correctFormat(tmp1) == -1 || correctFormat(tmp2) == -1)
+				std::cout << "incorrect date format please re-try" << std::endl;
+			else
+			{
+				if (db.theMostTech(tmp1, tmp2) == -1)
+					std::cout << "Error occured while executing the sql query" << std::endl;
+				std::cout << std::endl
+						  << "Press any key to continue..."
+						  << std::endl;
+				getchar();
+				getchar();
+				std::cout << std::endl;
+			}
 			break;
 
 		case 12:
