@@ -232,8 +232,9 @@ select * from Albums  // inits array of albums
 				
 /*15*/
 
-init array of musicians
 
+init array of musicians
+muicians[] = SELECT * FROM musician;
 max;
 index;
 
