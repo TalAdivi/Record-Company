@@ -1,13 +1,33 @@
+/*
+	*TO SEE SAME NAME DIFF ID*
+ same singer name == berry //question 2
+ same album name == By The Way	//question 5
+
+*/
+
 /*1*/
 
 select count(*) from album where E_Date > "2014-01-01" AND E_Date < "2019-01-01";
+
 /*2*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 select * from musician where Name Like '%" + name + "%';
 
 select count(*) from track as t join musician_tracks as m on \
  m.t_ID = t.T_id where m_ID = "id " and t.Date > '" + start + "' and t.Date < '" + end + "';
 
 /*3*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 select * from musician where Name Like '%" + name + "%';
 
 select count(*) from album as ab join (select a_ID from( (select * from album_track) as a INNER JOIN\
@@ -18,6 +38,12 @@ select count(*) from album as ab join (select a_ID from( (select * from album_tr
 
 /*4*/
 
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 SELECT * FROM instrument;
 	foreach(i in instruments) //make instruments array using parsing function of prev results
 		x = SELECT count(*) from (
@@ -29,6 +55,12 @@ on a.m_ID = b.m_ID);
 
 
 /*5*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 select * from album where name = name;
 //might be duplicates
 
@@ -39,6 +71,12 @@ as mb on mi.m_ID = mb.m_ID);
 
 
 /*6*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 
 SELECT * FROM producers;
 	foreach(p in producers) //make producers array using parsing function of prev results
@@ -51,14 +89,22 @@ where E_Date  > "2015-04-14" and E_Date < "2019-04-15";
 
 
 /*7*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 manufacturer[];
 countarray[];
 		
 SELECT * FROM instrument;
+
 	foreach(i in instruments) //make instruments array using parsing function of prev results
+
 		x = SELECT count(*) from (
-(SELECT * FROM musician_instrument where i_ID = 1) as a join musician_tracks as b 
-on a.m_ID = b.m_ID);
+			(SELECT * FROM musician_instrument where i_ID = 1) as a join musician_tracks as b 
+			on a.m_ID = b.m_ID);
 
 		if( !i.manufacturer exists in array )
 			array.push(i.manufacturer);
@@ -76,6 +122,12 @@ select count(*) from (select * from musician join musician_tracks on id_musician
 
 
 /*9*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 musicians[];
 countm[];
 
@@ -118,6 +170,7 @@ return genre[index of max];
 
 /*11*/
 
+
 tech[];
 countm[];
 
@@ -140,6 +193,11 @@ select * from Album where E_Date = (select min(E_Date) from album);
 
 /*13*/
 
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 Select * from tracks; // inits tracks array 
 	foreach track in tracks
 		x = select count(*) from Album_track where t_ID = 1;
@@ -148,6 +206,12 @@ Select * from tracks; // inits tracks array
 
 
 /*14*/
+
+/*
+	The reason we split the query into 2 seperate ones instead of using joins is because of the 
+	issue of abiguity and duplication in column names used in the join staments
+	because of the way we built our tables at the start and did not split into more relational tables.	
+*/
 
 select * from tracks ;
 create array of tech names;

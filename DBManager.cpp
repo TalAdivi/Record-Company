@@ -211,7 +211,8 @@ int DataBase::build()
  (12, 'Usher', 'New York', '745-942489', 'Singer'),\
  (13, 'Bob Marley', 'Jamaica', '097-125613', 'Singer'),\
  (14, 'Eminem', 'New York', '101-331015', 'Singer'),\
- (15, 'Berry Sakharof', 'Israel', '056-129314', 'Singer');",
+ (15, 'Berry Sakharof', 'Israel', '056-129314', 'Singer'),\
+ (16, 'Berry Sakharof', 'Israel', '052-908528', 'Singer');",
                          MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
@@ -241,7 +242,14 @@ int DataBase::build()
  (21, 'Cities Of The Future', 'Tomer Sason', 320, 'Tomer Sason', '2007-01-27', 'Electronic', 'Infected Mushroom'),\
  (22, 'Californication', 'Red Hot Chili Peppers', 203, 'Red Hot Chili Peppers', '1994-08-07', 'Funk', 'AudioCloud'),\
  (23, 'Snow', 'Red Hot Chili Peppers', 243, 'Red Hot Chili Peppers', '1990-04-28', 'Funk', 'AudioCloud'),\
- (24, 'Heaven', 'Brayen Adams', 189, 'Brayen Adams', '1991-02-09', 'Rock', 'dickbutt');",
+ (24, 'Heaven', 'Brayen Adams', 189, 'Brayen Adams', '1991-02-09', 'Rock', 'Cody Ko'),\
+ (25, 'Mosh','Eminem',381,'Eminem','2003-12-12','Rap','Eminem'),\
+ (26, 'Evil Needs','Eminem',254,'Eminem','2003-04-21','Rap','Eminem'),\
+ (27, 'Kama Yosi','Berry Sakharof',284,'Berry Sakharof','2009-01-14','Rock','Yossi Elgrabli'),\
+ (28, 'I Like It Like That', 'Kardi B', 272, 'Kardi B', '2017-04-26', 'Rap', 'Cody Ko'),\
+ (29, 'Trump Rap','Eminem',242,'Eminem','2012-02-29','Freestyle','Eminem'),\
+ (30, 'KillShot','Eminem',219,'Eminem','2012-02-29','Pop','Eminem'),\
+ (31, 'Without Me','Eminem',312,'Eminem','2012-02-29','Pop','Eminem');",
                          MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
@@ -263,7 +271,11 @@ int DataBase::build()
  (13, '8701', '2000-11-08', '2001-02-09', 2),\
  (14, 'Converting Vegetarians', '2010-12-23', '2015-02-09', 1),\
  (15, 'By The Way', '2001-04-15', '2002-11-30', 2),\
- (16, 'Get Up', '2012-07-01', '2015-03-19', 1);",
+ (16, 'Get Up', '2012-07-01', '2015-03-19', 1),\
+ (17, 'Encore', '2002-07-01', '2004-07-28', 2),\
+ (18, 'Negiaot', '1995-07-11', '1998-11-31', 1),\
+ (19, 'By The Way', '2002-03-27', '2004-09-11', 1),\
+ (20, 'Kamakazi', '2012-07-01', '2018-07-28', 3);",
                          MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
@@ -355,7 +367,14 @@ int DataBase::build()
  (11,21),\
  (10,22),\
  (10,23),\
- (9,24);",
+ (9,24),\
+ (14,25),\
+ (14,26),\
+ (16,27),\
+ (12,28),\
+ (14,29),\
+ (14,30),\
+ (14,31);",
                          MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
@@ -398,7 +417,14 @@ int DataBase::build()
  (21,14),\
  (22,15),\
  (23,15),\
- (24,16);",
+ (24,16),\
+ (25,17),\
+ (26,17),\
+ (27,18),\
+ (28,19),\
+ (29,20),\
+ (30,20),\
+ (31,20);",
                          MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
@@ -428,7 +454,11 @@ int DataBase::build()
  (13,3),\
  (14,12),\
  (15,11),\
- (16,1);",
+ (16,1),\
+ (17,2),\
+ (18,12),\
+ (19,2),\
+ (20,2);",
                          MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
@@ -668,6 +698,8 @@ int DataBase::popularInstrument()
  (SELECT * FROM musician_instrument where i_ID = " +
            std::to_string(v[i]->getID()) + ") as a join musician_tracks as b \
  on a.m_ID = b.m_ID);";
+    query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
     int value = -1;
 
     if ((result = mysqlx_execute(query)) != NULL)
@@ -700,10 +732,11 @@ int DataBase::popularInstrument()
   return 0;
 }
 
-int DataBase::instrumentsInAlbum(std::string name)
+int DataBase::instrumentsInAlbum(std::string name) // two albums same name ?
 {
   mysqlx_stmt_t *query;
   mysqlx_result_t *result;
+  int choise = 0;
 
   std::string qstr = "SELECT * FROM Album where Name Like '%" + name + "%';\0";
   query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
@@ -727,29 +760,55 @@ int DataBase::instrumentsInAlbum(std::string name)
       return -1;
   }
 
+  bool flag = true;
+
+  if (album.size() > 1)
+  {
+    do
+    {
+      std::cout << "There is " << album.size() << " albums with this name" << std::endl
+                << std::endl;
+      std::cout << "Index\tID, Name, S_Date, E_Date, Track Number" << std::endl;
+      for (int i = 0; i < album.size(); ++i)
+      {
+        std::cout << i + 1 << "\t" << *album[i] << std::endl;
+      }
+      std::cout << std::endl
+                << "Please select album Index you want to check for> ";
+      std::cin >> choise;
+      if (choise > album.size() || choise < 1)
+        std::cout << std::endl
+                  << "Incorrect number please choose again" << std::endl
+                  << std::endl;
+      else
+        flag = false;
+    } while (flag);
+  }
+
   qstr = "select * from instrument as i join\
  (select i_ID from musician_instrument as mi join\
  (select m_ID from Album_Track as a  join musician_tracks as b on a.t_ID = b.t_ID where a.a_id = " +
-         std::to_string(album[0]->getID()) + ")\
+         std::to_string(album[choise - 1]->getID()) + ")\
  as mb on mi.m_ID = mb.m_ID) as b on i.I_id = b.I_id ;\0";
 
   query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
 
   if ((result = mysqlx_execute(query)) == NULL)
   {
-    std::cout << "There is no musician with this name" << std::endl;
+    std::cout << "There was an error executing the Query" << std::endl;
     return -1;
   }
 
   std::vector<Instrument *> v = initArray<Instrument>(result);
 
   if (v.size() == 0)
-    std::cout << "No instruments were used in " + album[0]->getName() << std::endl;
+    std::cout << std::endl
+              << "No instruments were used in " + album[0]->getName() << std::endl;
   else
   {
     std::cout << "Instruments used in this album are :" << std::endl
               << std::endl;
-    std::cout << "Album Name: " + album[0]->getName() << std::endl
+    std::cout << "Album Name: " + album[choise - 1]->getName() << std::endl
               << "Index\tID, Brand, Type" << std::endl;
     std::cout << "------------------------------" << std::endl;
     for (int i = 0; i < v.size(); ++i)
@@ -763,7 +822,7 @@ int DataBase::instrumentsInAlbum(std::string name)
   return 0;
 }
 
-int DataBase::producerOfAlbumBetween(std::string start, std::string end)
+int DataBase::producerOfAlbumBetween(std::string start, std::string end) // cant with one query?
 {
   mysqlx_stmt_t *query;
   mysqlx_result_t *result;
@@ -876,6 +935,7 @@ int DataBase::popularManufacterer()
  (SELECT * FROM musician_instrument where i_ID = " +
            std::to_string(v[i]->getID()) + ") as a join musician_tracks as b\
  on a.m_ID = b.m_ID);";
+    query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
 
     int value = 0;
     if ((result = mysqlx_execute(query)) != NULL)
@@ -893,7 +953,7 @@ int DataBase::popularManufacterer()
       if (getIndex(manufacterers, v[i]->getBrand()) == -1)
       {
         manufacterers.push_back(v[i]->getBrand());
-        count.push_back(x);
+        count.push_back(value);
       }
       else
       {
@@ -1211,7 +1271,7 @@ int DataBase::tracksInTwoAlbumsOrMore()
 
   if (choosen.size() == 0)
   {
-    std::cout << "There was an error running the Query." << std::endl;
+    std::cout << "There were no tracks that were in two or more albums." << std::endl;
   }
   else
   {
@@ -1349,6 +1409,8 @@ int DataBase::mostDiverseGenre()
   {
     int64_t value;
     qstr = "select count(*) from track as a join (select * from musician_tracks where m_ID = " + std::to_string(v[i]->getID()) + ") as b on a.t_ID = b.t_ID group by Genre;";
+    query = mysqlx_sql_new(this->session, qstr.c_str(), MYSQLX_NULL_TERMINATED);
+
     if ((result = mysqlx_execute(query)) != NULL)
     {
       if ((row = mysqlx_row_fetch_one(result)) != NULL)

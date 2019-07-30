@@ -47,9 +47,11 @@ int userInterface(DataBase &db)
 	std::string tmp2;
 	std::string clear;
 
-	std::cout << "Welcome to MusicCompany project" << std::endl
+	std::cout << std::endl
+			  << std::endl
+			  << "Welcome to MusicCompany project" << std::endl
+			  << " ---------------------------------------------------------------------- " << std::endl
 			  << std::endl;
-
 	int choice = 0;
 	do
 	{
@@ -72,6 +74,7 @@ int userInterface(DataBase &db)
 		" << std::endl;
 		std::cout << "Please choose function by number >\t";
 		std::cin >> choice;
+		std::cout << std::endl;
 
 		switch (choice)
 		{
@@ -82,6 +85,12 @@ int userInterface(DataBase &db)
 			std::cout << std::endl;
 			if (db.albumsBetween(tmp1, tmp2) == -1)
 				std::cout << "Error occured while executing the sql query" << std::endl;
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 2:
@@ -90,9 +99,16 @@ int userInterface(DataBase &db)
 				std::cout << "Plese input musician name" << std::endl;
 				std::getline(std::cin, clear);
 				std::getline(std::cin, tmp1);
+				std::cout << std::endl;
 				if (db.musicianSongBetween(tmp1) != 2)
 					break;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 3:
@@ -101,9 +117,16 @@ int userInterface(DataBase &db)
 				std::cout << "Plese input musician name" << std::endl;
 				std::getline(std::cin, clear);
 				std::getline(std::cin, tmp1);
+				std::cout << std::endl;
 				if (db.musicianAlbumBetween(tmp1) != 2)
 					break;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 4:
@@ -111,18 +134,31 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 5:
 			while (1)
 			{
 				std::cout << "Plese input Album name" << std::endl;
-				std::getline(std::cin,clear);
+				std::getline(std::cin, clear);
 				std::getline(std::cin, tmp1);
+				std::cout << std::endl;
 				if (db.instrumentsInAlbum(tmp1) != 2)
 					break;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
 
+			std::cout << std::endl;
 			break;
 
 		case 6:
@@ -132,6 +168,12 @@ int userInterface(DataBase &db)
 			std::cout << std::endl;
 			if (db.producerOfAlbumBetween(tmp1, tmp2) == -1)
 				std::cout << "Error occured while executing the sql query" << std::endl;
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 7:
@@ -139,6 +181,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 8:
@@ -146,6 +194,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 9:
@@ -153,6 +207,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 10:
@@ -160,6 +220,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 11:
@@ -169,7 +235,12 @@ int userInterface(DataBase &db)
 			std::cout << std::endl;
 			if (db.theMostTech(tmp1, tmp2) == -1)
 				std::cout << "Error occured while executing the sql query" << std::endl;
-
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 12:
@@ -177,6 +248,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 13:
@@ -184,7 +261,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
-
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 14:
@@ -192,6 +274,12 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 15:
@@ -199,11 +287,18 @@ int userInterface(DataBase &db)
 			{
 				std::cout << "Error occured while executing the sql query" << std::endl;
 			}
+			std::cout << std::endl
+					  << "Press any key to continue..."
+					  << std::endl;
+			getchar();
+			getchar();
+			std::cout << std::endl;
 			break;
 
 		case 16:
 			flag = false;
 			std::cout << std::endl
+					  << std::endl
 					  << "Goodbye" << std::endl;
 			break;
 
