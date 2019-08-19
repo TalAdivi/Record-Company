@@ -7,9 +7,9 @@ Developed with [Tal Adivi](https://github.com/TalAdivi)
 #### TODO LIST
 - [x] initialize the tables using code 
 - [x] fill the tables with data generated with code
-- [ ] build a parsing functions to recieve all the functionality queries data
-- [ ] build said functions to execute the requested functionality
-- [ ] build a interface for the user to use said functions
+- [x] build a parsing functions to recieve all the functionality queries data
+- [x] build said functions to execute the requested functionality
+- [x] build a interface for the user to use said functions
 
 
 #### Compilation 
