@@ -2,7 +2,7 @@
 
 This project was built for a course in DB managment where we were requested to build a DB based on some real world examinations and functinality of a record label company.
 
-Developed with [Tal Adivi](https://github.com/TalAdivi)
+Developed by [Fadi Atamny](https://github.com/fadiatamny), [Tal Adivi](https://github.com/TalAdivi)
 
 #### TODO LIST
 - [x] initialize the tables using code 
